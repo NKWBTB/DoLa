@@ -42,9 +42,14 @@ class DoLa:
         else:
             raise ValueError(f"Invalid device: {self.device}")
         
-        tokenizer = AutoTokenizer.from_pretrained(model_name if not 'vicuna' in model_name else 'huggyllama/llama-7b')
-        model = AutoModelForCausalLM.from_pretrained(model_name,
-            low_cpu_mem_usage=True, **kwargs)
+        tokenizer = AutoTokenizer.from_pretrained(model_name) # if not 'vicuna' in model_name else 'huggyllama/llama-7b')
+        if "Mistral" in model_name:
+            from transformers.models.mistral import MistralForCausalLM
+            model = MistralForCausalLM.from_pretrained(model_name,
+                low_cpu_mem_usage=True, **kwargs)
+        else:
+            model = AutoModelForCausalLM.from_pretrained(model_name,
+                low_cpu_mem_usage=True, **kwargs)
 
         if self.device == "cuda" and self.num_gpus == 1:
             model.cuda()
