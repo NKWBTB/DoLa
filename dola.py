@@ -43,7 +43,7 @@ class DoLa:
             raise ValueError(f"Invalid device: {self.device}")
         
         tokenizer = AutoTokenizer.from_pretrained(model_name) # if not 'vicuna' in model_name else 'huggyllama/llama-7b')
-        if "Mistral" in model_name:
+        if "mistral" in model_name.lower():
             from transformers.models.mistral import MistralForCausalLM
             model = MistralForCausalLM.from_pretrained(model_name,
                 low_cpu_mem_usage=True, **kwargs)
